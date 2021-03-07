@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
 public class Vestigium {
     /**
      * Vestigium means "trace" in Latin. In this problem we work with Latin squares and matrix traces.
@@ -21,7 +24,62 @@ public class Vestigium {
      * 1 ≤ T ≤ 100.
      * 2 ≤ N ≤ 100.
      * 1 ≤ Mi,j ≤ N, for all i, j.
+     *
+     *
+     * Time Complexity - O(N^2)
+     * Space Complexity - O(N) for the hashset
      **/
 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        int limit = scan.nextInt();
+        for(int testcase = 0;testcase < limit ;++testcase) {
+            int n = scan.nextInt();
+            int[][] mat = new int[n][n];
+            for(int i=0;i<n;++i) {
+                for(int j=0;j<n;++j) {
+                    mat[i][j]=scan.nextInt();
+                }
+            }
+            int[] result = vestigium(mat);
+            System.out.print("Case #"+(testcase+1)+": ");
+            for(int i=0;i<3;++i) {
+                System.out.print(result[i]+" ");
+            }
+            System.out.println();
+        }
+    }
 
+    public static int[] vestigium(int[][] mat) {
+        int[] result = new int[3];
+        for(int i=0;i<mat.length;++i) {
+            result[0] += mat[i][i];
+        }
+
+        HashSet<Integer> set;
+        for(int r=0;r<mat.length;++r) {
+            set = new HashSet<>();
+            for(int c=0;c<mat.length;++c) {
+                if(set.contains(mat[r][c])) {
+                    result[1]++;
+                    break;
+                }else{
+                    set.add(mat[r][c]);
+                }
+            }
+        }
+
+        for(int c=0;c<mat.length;++c) {
+            set = new HashSet<>();
+            for(int r=0;r<mat.length;++r) {
+                if(set.contains(mat[r][c])) {
+                    result[2]++;
+                    break;
+                }else{
+                    set.add(mat[r][c]);
+                }
+            }
+        }
+        return result;
+    }
 }
